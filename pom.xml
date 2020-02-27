@@ -14,6 +14,8 @@
     <name>totoro</name>
     <description>Totoro is a mall system that uses SpringBoot and Vue</description>
 
+    <packaging>pom</packaging>
+
     <modules>
         <module>totoro-db</module>
         <module>totoro-admin</module>
