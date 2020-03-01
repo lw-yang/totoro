@@ -1,6 +1,6 @@
 package com.totoro.common.exception;
 
-import com.totoro.common.response.ResultMessage;
+import com.totoro.common.response.ResultMessageEnum;
 
 /**
  * 未认证异常
@@ -12,7 +12,7 @@ public class UnauthorizedException extends TotoroException {
     public UnauthorizedException() {
     }
 
-    public UnauthorizedException(ResultMessage resultMessage) {
+    public UnauthorizedException(ResultMessageEnum resultMessage) {
         super(resultMessage);
     }
 }

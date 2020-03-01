@@ -1,6 +1,6 @@
 package com.totoro.common.exception;
 
-import com.totoro.common.response.ResultMessage;
+import com.totoro.common.response.ResultMessageEnum;
 
 /**
  * 无权限异常
@@ -12,7 +12,7 @@ public class ForbiddenException extends TotoroException {
     public ForbiddenException() {
     }
 
-    public ForbiddenException(ResultMessage resultMessage) {
+    public ForbiddenException(ResultMessageEnum resultMessage) {
         super(resultMessage);
     }
 }

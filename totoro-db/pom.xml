@@ -18,14 +18,16 @@
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.1</version>
         </dependency>
+
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
+            <artifactId>druid-spring-boot-starter</artifactId>
             <version>1.1.21</version>
         </dependency>
         <dependency>
@@ -50,7 +52,7 @@
                     <configurationFile>
                         ${basedir}/src/main/resources/MybatisGenerator.xml
                     </configurationFile>
-                    <overwrite>true</overwrite>
+                    <overwrite>false</overwrite>
                 </configuration>
                 <dependencies>
                     <dependency>

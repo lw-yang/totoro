@@ -1,6 +1,6 @@
 package com.totoro.common.exception;
 
-import com.totoro.common.response.ResultMessage;
+import com.totoro.common.response.ResultMessageEnum;
 
 /**
  * 自定义统一异常
@@ -9,21 +9,21 @@ import com.totoro.common.response.ResultMessage;
  */
 public class TotoroException extends RuntimeException {
 
-    private ResultMessage resultMessage;
+    private ResultMessageEnum resultMessage;
 
     public TotoroException(){
         super();
     }
 
-    public TotoroException(ResultMessage resultMessage){
+    public TotoroException(ResultMessageEnum resultMessage){
         this.resultMessage = resultMessage;
     }
 
-    public ResultMessage getResultMessage() {
+    public ResultMessageEnum getResultMessageEnum() {
         return resultMessage;
     }
 
-    public void setResultMessage(ResultMessage resultMessage) {
+    public void setResultMessageEnum(ResultMessageEnum resultMessage) {
         this.resultMessage = resultMessage;
     }
 }

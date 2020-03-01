@@ -1,6 +1,6 @@
 package com.totoro.common.exception;
 
-import com.totoro.common.response.ResultMessage;
+import com.totoro.common.response.ResultMessageEnum;
 
 /**
  * 请求超时异常
@@ -12,7 +12,7 @@ public class RequestTimeoutException extends TotoroException{
     public RequestTimeoutException() {
     }
 
-    public RequestTimeoutException(ResultMessage resultMessage) {
+    public RequestTimeoutException(ResultMessageEnum resultMessage) {
         super(resultMessage);
     }
 }

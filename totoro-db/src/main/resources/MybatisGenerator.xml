@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
-    PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-    "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <!--<classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
-
     <context id="Mybatis3Context" targetRuntime="MyBatis3">
         <property name="javaFileEncoding" value="UTF-8"/>
 
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+<!--        <plugin type="org.mybatis.generator.plugins.MapperConfigPlugin"></plugin>-->
+
         <commentGenerator>
-            <property name="addRemarkComments" value="true" />
+            <property name="addRemarkComments" value="true"/>
             <property name="suppressDate" value="true"/>
         </commentGenerator>
 
@@ -21,7 +23,7 @@
         </jdbcConnection>
 
         <javaTypeResolver>
-            <property name="forceBigDecimals" value="true" />
+            <property name="forceBigDecimals" value="true"/>
             <property name="useJSR310Types" value="true"/>
         </javaTypeResolver>
 
@@ -34,11 +36,18 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.totoro.db.dao" targetProject="C:/办公/totoro/totoro-db/src/main/java">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.totoro.db.dao"
+                             targetProject="C:/办公/totoro/totoro-db/src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user" domainObjectName="User" enableCountByExample="false"
+        <table tableName="user_info" enableCountByExample="false"
+                       enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
+        </table>
+        <table tableName="user_address" enableCountByExample="false"
+               enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
+        </table>
+        <table tableName="coupon" enableCountByExample="false"
                enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
         </table>
 

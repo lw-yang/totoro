@@ -1,6 +1,6 @@
 package com.totoro.common.exception;
 
-import com.totoro.common.response.ResultMessage;
+import com.totoro.common.response.ResultMessageEnum;
 
 /**
  * 请求次数超范围异常
@@ -12,7 +12,7 @@ public class TooManyRequestsException extends TotoroException {
     public TooManyRequestsException() {
     }
 
-    public TooManyRequestsException(ResultMessage resultMessage) {
+    public TooManyRequestsException(ResultMessageEnum resultMessage) {
         super(resultMessage);
     }
 }

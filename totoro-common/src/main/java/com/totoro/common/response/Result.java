@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * 封装统一返回Restful
@@ -18,22 +19,28 @@ public class Result<T> extends ResponseEntity {
         super(status);
     }
 
+    public Result(Object body, HttpStatus status) {
+        super(body, status);
+    }
+
     /**
      * GET,PUT,PATCH方法成功返回使用
      *
      * @return Result
      */
     public static Result success() {
-        return (Result) ResponseEntity.ok().build();
+        return new Result(HttpStatus.OK);
     }
 
     /**
-     * @param body    返回数据
+     * GET,PUT,PATCH方法成功返回使用,并返回相关数据
+     *
      * @param <T>数据类型
+     * @param body    返回数据
      * @return Result
      */
-    public static <T> Result<T> success(T body) {
-        return (Result<T>) ResponseEntity.ok(body);
+    public static <T> Result success(T body) {
+        return new Result(body, HttpStatus.OK);
     }
 
     /**
@@ -43,8 +50,8 @@ public class Result<T> extends ResponseEntity {
      * @param <T>  数据类型
      * @return Result
      */
-    public static <T> Result<T> created(T body) {
-        return (Result<T>) ResponseEntity.status(HttpStatus.CREATED).body(body);
+    public static <T> Result created(T body) {
+        return new Result(body, HttpStatus.CREATED);
     }
 
     /**
@@ -53,7 +60,7 @@ public class Result<T> extends ResponseEntity {
      * @return Result
      */
     public static Result emptyContent() {
-        return (Result) ResponseEntity.noContent().build();
+        return new Result(HttpStatus.NO_CONTENT);
     }
 
 
@@ -63,9 +70,18 @@ public class Result<T> extends ResponseEntity {
      * @param resultMessage 出错详细信息
      * @return Result
      */
-    public static Result badRequest(ResultMessage resultMessage) {
-        return (Result) ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Result.errPut(resultMessage));
+    public static Result badRequest(ResultMessageEnum resultMessage) {
+        return new Result(errPut(resultMessage), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * 请求参数错误出错时使用 BAD_REQUEST
+     *
+     * @param resultMessage 出错详细信息
+     * @return Result
+     */
+    public static Result badRequest(ResultMessageEnum resultMessage, String detail) {
+        return new Result(errPut(resultMessage, detail), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -74,9 +90,8 @@ public class Result<T> extends ResponseEntity {
      * @param resultMessage 出错详细信息
      * @return Result
      */
-    public static Result unauthorized(ResultMessage resultMessage) {
-        return (Result) ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Result.errPut(resultMessage));
+    public static Result unauthorized(ResultMessageEnum resultMessage) {
+        return new Result(errPut(resultMessage), HttpStatus.UNAUTHORIZED);
     }
 
     /**
@@ -85,9 +100,8 @@ public class Result<T> extends ResponseEntity {
      * @param resultMessage 出错详细信息
      * @return Result
      */
-    public static Result forbidden(ResultMessage resultMessage){
-        return (Result) ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(Result.errPut(resultMessage));
+    public static Result forbidden(ResultMessageEnum resultMessage){
+        return new Result(errPut(resultMessage), HttpStatus.FORBIDDEN);
     }
 
     /**
@@ -96,9 +110,8 @@ public class Result<T> extends ResponseEntity {
      * @param resultMessage 出错详细信息
      * @return Result
      */
-    public static Result notFound(ResultMessage resultMessage){
-        return (Result) ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Result.errPut(resultMessage));
+    public static Result notFound(ResultMessageEnum resultMessage){
+        return new Result(errPut(resultMessage), HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -107,9 +120,8 @@ public class Result<T> extends ResponseEntity {
      * @param resultMessage 出错详细信息
      * @return Result
      */
-    public static Result requestTimeout(ResultMessage resultMessage){
-        return (Result) ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
-                .body(Result.errPut(resultMessage));
+    public static Result requestTimeout(ResultMessageEnum resultMessage){
+        return new Result(errPut(resultMessage), HttpStatus.REQUEST_TIMEOUT);
     }
 
     /**
@@ -118,9 +130,8 @@ public class Result<T> extends ResponseEntity {
      * @param resultMessage 出错详细信息
      * @return Result
      */
-    public static Result tooManyRequests(ResultMessage resultMessage){
-        return (Result) ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                .body(Result.errPut(resultMessage));
+    public static Result tooManyRequests(ResultMessageEnum resultMessage){
+        return new Result(errPut(resultMessage), HttpStatus.TOO_MANY_REQUESTS);
     }
 
     /**
@@ -129,9 +140,8 @@ public class Result<T> extends ResponseEntity {
      * @param resultMessage 出错详细信息
      * @return Result
      */
-    public static Result internalServerError(ResultMessage resultMessage){
-        return (Result) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Result.errPut(resultMessage));
+    public static Result internalServerError(ResultMessageEnum resultMessage){
+        return new Result(errPut(resultMessage), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -140,21 +150,28 @@ public class Result<T> extends ResponseEntity {
      * @param resultMessage 出错详细信息
      * @return Result
      */
-    public static Result serviceUnavailable(ResultMessage resultMessage){
-        return (Result) ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(Result.errPut(resultMessage));
+    public static Result serviceUnavailable(ResultMessageEnum resultMessage){
+        return new Result(errPut(resultMessage), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
+    private static HashMap errPut(ResultMessageEnum errorMessage) {
+        return errPut(errorMessage, null);
+    }
     /**
      * 将错误消息封装成HashMap返回
      *
      * @param errorMessage 错误消息
      * @return HashMap
      */
-    private static HashMap errPut(ResultMessage errorMessage) {
+    private static HashMap errPut(ResultMessageEnum errorMessage, String detail) {
         HashMap<String, Object> result = new HashMap<>(2, 1);
         result.put(ResultConstant.ERROR_CODE, errorMessage.getErrCode());
-        result.put(ResultConstant.ERROR_MESSAGE, errorMessage.getErrMessage());
+        if (Objects.nonNull(detail)){
+            result.put(ResultConstant.ERROR_MESSAGE, errorMessage.getErrMessage() + " => " + detail);
+        }else {
+            result.put(ResultConstant.ERROR_MESSAGE, errorMessage.getErrMessage());
+        }
+
         return result;
     }
 

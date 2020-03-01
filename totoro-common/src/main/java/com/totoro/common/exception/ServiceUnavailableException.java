@@ -1,6 +1,6 @@
 package com.totoro.common.exception;
 
-import com.totoro.common.response.ResultMessage;
+import com.totoro.common.response.ResultMessageEnum;
 
 /**
  * 服务不可用异常
@@ -11,7 +11,7 @@ public class ServiceUnavailableException extends TotoroException {
     public ServiceUnavailableException() {
     }
 
-    public ServiceUnavailableException(ResultMessage resultMessage) {
+    public ServiceUnavailableException(ResultMessageEnum resultMessage) {
         super(resultMessage);
     }
 }
