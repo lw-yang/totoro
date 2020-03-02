@@ -253,11 +253,11 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-  <select id="selectByUsername" resultMap="BaseResultMap">
+  <select id="selectByNickname" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user_info
-    where nickname = #{nickname,jdbcType=VARCHAR}
+    where BINARY nickname = #{nickname,jdbcType=VARCHAR}
   </select>
   <select id="selectByPhone" resultMap="BaseResultMap">
     select
@@ -271,4 +271,11 @@
     from user_info
     where email = {email,jdbcType=VARCHAR}
   </select>
+  <select id="selectByToken" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_info
+    where token = #{token,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

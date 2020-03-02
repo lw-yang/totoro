@@ -5,23 +5,29 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * @author lwyang  2020/2/29
+ * 更新用户信息DTO
+ *
+ * @author lwyang  2020/3/2
  */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
+public class UpdateDTO {
 
+    @NotNull(message = "用户ID不能为空")
     private Long id;
 
     private String nickname;
+
+    private String password;
 
     private String avatar;
 
@@ -45,7 +51,5 @@ public class UserDTO {
 
     private LocalDateTime lastLoginTime;
 
-    private Integer couponsCount;
 
-    //TODO browse history list
 }

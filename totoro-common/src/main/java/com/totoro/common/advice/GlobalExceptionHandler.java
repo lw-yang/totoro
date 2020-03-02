@@ -5,10 +5,8 @@ import com.totoro.common.response.Result;
 import com.totoro.common.response.ResultMessageEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.sql.SQLException;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 全局异常处理
@@ -16,25 +14,21 @@ import java.sql.SQLException;
  * @author lwyang  2020/2/27
  */
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result validatedError(MethodArgumentNotValidException e){
-        log.error("参数验证错误：{}", e.getBindingResult().getFieldError().getDefaultMessage());
+        log.error("【参数验证错误】：{}", e.getBindingResult().getFieldError().getDefaultMessage());
         return Result.badRequest(ResultMessageEnum.PARAMETER_ERROR, e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
-    @ExceptionHandler(SQLException.class)
-    public Result sqlException(SQLException e){
-        log.error("数据库错误：{}" ,e.getMessage());
-        return Result.badRequest(ResultMessageEnum.SQL_OPERATION_ERROR, e.getMessage());
-    }
-
-    @ExceptionHandler(TotoroException.class)
-    public Result badRequest(TotoroException e){
-        return Result.badRequest(e.getResultMessageEnum());
+    @ExceptionHandler(Exception.class)
+    public Result exception(Exception e){
+        log.error("【出错了】：{}" ,e.getMessage());
+        e.printStackTrace();
+        return Result.badRequest(ResultMessageEnum.ERROR_MESSAGE);
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -71,5 +65,6 @@ public class GlobalExceptionHandler {
     public Result serviceUnavailable(ServiceUnavailableException e){
         return Result.serviceUnavailable(e.getResultMessageEnum());
     }
+
 
 }

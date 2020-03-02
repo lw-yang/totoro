@@ -52,7 +52,7 @@
                     <configurationFile>
                         ${basedir}/src/main/resources/MybatisGenerator.xml
                     </configurationFile>
-                    <overwrite>false</overwrite>
+                    <overwrite>true</overwrite>
                 </configuration>
                 <dependencies>
                     <dependency>

@@ -41,12 +41,12 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="user_info" enableCountByExample="false"
-                       enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
-        </table>
-        <table tableName="user_address" enableCountByExample="false"
-               enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
-        </table>
+<!--        <table tableName="user_info" enableCountByExample="false"-->
+<!--                       enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">-->
+<!--        </table>-->
+<!--        <table tableName="user_address" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">-->
+<!--        </table>-->
         <table tableName="coupon" enableCountByExample="false"
                enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
         </table>
