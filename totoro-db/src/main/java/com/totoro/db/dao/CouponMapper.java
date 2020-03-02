@@ -50,4 +50,11 @@ public interface CouponMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Coupon record);
+
+    /**
+     * 查询某用户优惠券数量
+     * @param userId
+     * @return
+     */
+    int selectCountByUserId(Long userId);
 }
