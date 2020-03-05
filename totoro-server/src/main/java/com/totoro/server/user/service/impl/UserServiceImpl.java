@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO userLogin(LoginDTO loginDTO) {
 
-        log.info("【LoginDTO】：{}", loginDTO.toString());
+        log.info("【userLogin】请求参数loginDTO：{}", loginDTO.toString());
 
         UserInfo userInfo = null;
         String username = loginDTO.getUsername();
@@ -67,14 +67,14 @@ public class UserServiceImpl implements UserService {
         }
 
         if (Objects.isNull(userInfo)) {
-            log.error("【用户不存在】 username: {}", loginDTO.getUsername());
+            log.error("【userLogin】用户不存在 username: {}", loginDTO.getUsername());
             throw new UserException(ResultMessageEnum.USER_NOT_EXIST);
         }
 
         //check password
         boolean isPasswordCorrect = BCrypt.checkpw(loginDTO.getPassword(), userInfo.getPassword());
         if (!isPasswordCorrect) {
-            log.error("【用户密码错误】");
+            log.error("【userLogin】用户密码错误");
             throw new UserException(ResultMessageEnum.USER_PASSWORD_ERROR);
         }
 
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
 
         int updateResult = userInfoMapper.updateByPrimaryKeySelective(userUpdateInfo);
         if (updateResult != 1) {
-            log.error("【用户token更新失败】");
+            log.error("【userLogin】用户token更新失败");
             throw new UserException(ResultMessageEnum.USER_UPDATE_FAILURE);
         }
 
@@ -113,11 +113,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional register(RegisterDTO registerDTO) {
 
-        log.info("【registerDTO】：{}", registerDTO.toString());
+        log.info("【register】请求参数registerDTO：{}", registerDTO.toString());
 
         //check password
         if (!Objects.equals(registerDTO.getPassword(), registerDTO.getRepeatPassword())) {
-            log.error("【用户注册两次密码不一致】");
+            log.error("【register】用户注册两次密码不一致");
             throw new UserException(ResultMessageEnum.USER_PASSWORD_NOT_SAME);
         }
 
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
         switch (deduceRegisterType(registerUsername)) {
             case EMAIL: {
                 if (Objects.nonNull(userInfoMapper.selectByEmail(registerUsername))) {
-                    log.error("【用户注册邮箱已存在】：{}", registerUsername);
+                    log.error("【register】用户注册邮箱已存在：{}", registerUsername);
                     throw new UserException(ResultMessageEnum.USER_EMAIL_EXIST);
                 }
 
@@ -139,7 +139,7 @@ public class UserServiceImpl implements UserService {
             }
             case PHONE:
                 if (Objects.nonNull(userInfoMapper.selectByPhone(registerUsername))) {
-                    log.error("【用户注册手机号已存在】：{}", registerUsername);
+                    log.error("【register】用户注册手机号已存在：{}", registerUsername);
                     throw new UserException(ResultMessageEnum.USER_PHONE_EXIST);
                 }
 
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
                 break;
             case USERNAME:
                 if (Objects.nonNull(userInfoMapper.selectByNickname(registerUsername))) {
-                    log.error("【用户注册用户名已存在】：{}", registerUsername);
+                    log.error("【register】用户注册用户名已存在：{}", registerUsername);
                     throw new UserException(ResultMessageEnum.USER_NAME_EXIST);
                 }
 
@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
         //database insert
         int insertResult = userInfoMapper.insertSelective(userInfo);
         if (insertResult != 1) {
-            log.error("【用户注册失败】 username: {}", registerUsername);
+            log.error("【register】用户注册失败 username: {}", registerUsername);
             throw new UserException(ResultMessageEnum.USER_REGISTER_FAILURE);
         }
 
@@ -197,18 +197,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByToken(String token){
-        log.info("【用户token】：{}", token);
+        log.info("【getUserByToken】请求参数token：{}", token);
 
         UserInfo userInfo = userInfoMapper.selectByToken(token);
 
         if (Objects.isNull(userInfo)){
-            log.error("【用户不存在】 token：{}", token);
+            log.error("【getUserByToken】用户不存在 token：{}", token);
             throw new UserException(ResultMessageEnum.USER_NOT_EXIST);
         }
 
         //token expire
         if (userInfo.getTokenExpireTime().isBefore(LocalDateTime.now())){
-            log.error("【用户token已失效】 token：{}", token);
+            log.error("【getUserByToken】用户token已失效 token：{}", token);
             throw new UserException(ResultMessageEnum.USER_TOKEN_EXPIRE);
         }
 
@@ -219,7 +219,7 @@ public class UserServiceImpl implements UserService {
         userInfoUpdate.setLastLoginTime(LocalDateTime.now());
         int updateResult = userInfoMapper.updateByPrimaryKeySelective(userInfoUpdate);
         if (updateResult != 1){
-            log.error("【更新用户token和登录时间失败】");
+            log.error("【getUserByToken】更新用户token和登录时间失败");
             throw new UserException(ResultMessageEnum.USER_UPDATE_FAILURE);
         }
 
@@ -236,13 +236,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional updateUser(UpdateDTO updateDTO){
-        log.info("【updateDTO】：{}", updateDTO.toString());
+        log.info("【updateUser】请求参数updateDTO：{}", updateDTO.toString());
 
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(updateDTO, userInfo);
         int updateResult = userInfoMapper.updateByPrimaryKeySelective(userInfo);
         if (updateResult != 1){
-            log.error("【更新用户信息失败】");
+            log.error("【updateUser】更新用户信息失败");
             throw new UserException(ResultMessageEnum.USER_UPDATE_FAILURE);
         }
 

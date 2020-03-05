@@ -4,3 +4,7 @@ server:
 spring:
   profiles:
     active: db
+
+#logging:
+#  level:
+#    com.totoro.db: debug

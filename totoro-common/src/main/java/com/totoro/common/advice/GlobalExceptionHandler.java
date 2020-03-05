@@ -20,13 +20,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result validatedError(MethodArgumentNotValidException e){
-        log.error("【参数验证错误】：{}", e.getBindingResult().getFieldError().getDefaultMessage());
+        log.error("【参数验证错误】 {}", e.getBindingResult().getFieldError().getDefaultMessage());
         return Result.badRequest(ResultMessageEnum.PARAMETER_ERROR, e.getBindingResult().getFieldError().getDefaultMessage());
     }
 
     @ExceptionHandler(Exception.class)
     public Result exception(Exception e){
-        log.error("【出错了】：{}" ,e.getMessage());
+        log.error("【出错了, 请联系作者】 {}" ,e.getMessage());
         e.printStackTrace();
         return Result.badRequest(ResultMessageEnum.ERROR_MESSAGE);
     }
