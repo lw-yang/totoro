@@ -235,11 +235,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional updateUser(UpdateDTO updateDTO){
+    public Optional updateUser(UpdateDTO updateDTO, Long id){
         log.info("【updateUser】请求参数updateDTO：{}", updateDTO.toString());
 
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(updateDTO, userInfo);
+        userInfo.setId(id);
         int updateResult = userInfoMapper.updateByPrimaryKeySelective(userInfo);
         if (updateResult != 1){
             log.error("【updateUser】更新用户信息失败");

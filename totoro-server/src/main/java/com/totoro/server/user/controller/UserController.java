@@ -50,8 +50,8 @@ public class UserController {
      * @param token token
      * @return Result [status: 200]
      */
-    @GetMapping("/")
-    public Result getUser(@RequestParam("token") String token) {
+    @GetMapping("/{token}")
+    public Result getUser(@PathVariable String token) {
         return Result.success(userService.getUserByToken(token));
     }
 
@@ -61,9 +61,9 @@ public class UserController {
      * @param updateDTO updateDTO
      * @return Result [status: 200]
      */
-    @PutMapping("/")
-    public Result updateUser(@RequestBody UpdateDTO updateDTO) {
-        return Result.success(userService.updateUser(updateDTO));
+    @PutMapping("/{id}")
+    public Result updateUser(@RequestBody UpdateDTO updateDTO, @PathVariable Long id) {
+        return Result.success(userService.updateUser(updateDTO, id));
     }
 
 }

@@ -36,5 +36,11 @@ public interface UserService {
      */
     UserDTO getUserByToken(String token);
 
-    Optional updateUser(UpdateDTO updateDTO);
+    /**
+     * 更新用户信息
+     *
+     * @param updateDTO UpdateDTO
+     * @return Optional
+     */
+    Optional updateUser(UpdateDTO updateDTO, Long id);
 }
