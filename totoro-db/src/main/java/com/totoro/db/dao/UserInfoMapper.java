@@ -51,9 +51,32 @@ public interface UserInfoMapper {
      */
     int updateByPrimaryKey(UserInfo record);
 
-    UserInfo selectByUsername(String nickname);
+    /**
+     * 根据 nickname 查询用户信息
+     * @param nickname nickname
+     * @return UserInfo
+     */
+    UserInfo selectByNickname(String nickname);
 
+    /**
+     * 根据 phone 查询用户信息
+     * @param phone phone
+     * @return UserInfo
+     */
     UserInfo selectByPhone(String phone);
 
+    /**
+     * 根据 email 查询用户信息
+     * @param email email
+     * @return UserInfo
+     */
     UserInfo selectByEmail(String email);
+
+    /**
+     * 根据token 查询用户信息
+     *
+     * @param token token
+     * @return UserInfo
+     */
+    UserInfo selectByToken(String token);
 }

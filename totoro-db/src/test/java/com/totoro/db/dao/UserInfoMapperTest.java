@@ -47,4 +47,11 @@ class UserInfoMapperTest {
     @Test
     void updateByPrimaryKey() {
     }
+
+    @Test
+    void selectByNickname() {
+
+        UserInfo userInfo = userInfoMapper.selectByNickname("lwyang");
+        System.out.println(userInfo);
+    }
 }

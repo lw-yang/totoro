@@ -10,18 +10,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * @author lwyang  2020/2/29
+ * 更新用户信息DTO
+ *
+ * @author lwyang  2020/3/2
  */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
-
-    private Long id;
+public class UpdateDTO {
 
     private String nickname;
+
+    private String password;
 
     private String avatar;
 
@@ -45,7 +47,5 @@ public class UserDTO {
 
     private LocalDateTime lastLoginTime;
 
-    private Integer couponsCount;
 
-    //TODO browse history list
 }

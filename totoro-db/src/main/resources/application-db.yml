@@ -4,6 +4,7 @@ spring:
     username: root
     password: 123456
     druid:
+      #连接池
       initial-size: 1
       max-active: 20
       min-idle: 1
@@ -18,8 +19,21 @@ spring:
       pool-prepared-statements: true
       max-open-prepared-statements: 20
       async-init: true
+
+      #监控
       web-stat-filter:
         enabled: true
+        session-stat-enable: true
+      stat-view-servlet:
+        enabled: true
+      aop-patterns: com.totoro.server.service.*
+      filter:
+        stat:
+          enabled: true
+          slow-sql-millis: 2000
+          log-slow-sql: true
+        wall:
+          enabled: true
 
 mybatis:
   mapper-locations: classpath:mapper/*
