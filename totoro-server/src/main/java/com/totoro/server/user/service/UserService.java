@@ -40,6 +40,7 @@ public interface UserService {
      * 更新用户信息
      *
      * @param updateDTO UpdateDTO
+     * @param id id
      * @return Optional
      */
     Optional updateUser(UpdateDTO updateDTO, Long id);

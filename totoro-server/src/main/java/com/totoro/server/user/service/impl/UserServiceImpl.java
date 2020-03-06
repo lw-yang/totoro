@@ -2,9 +2,13 @@ package com.totoro.server.user.service.impl;
 
 import com.totoro.common.response.ResultMessageEnum;
 import com.totoro.common.utils.BCrypt;
+import com.totoro.common.utils.CouponsCdKeyConstant;
 import com.totoro.common.utils.RegExpConstant;
 import com.totoro.db.dao.CouponMapper;
+import com.totoro.db.dao.UserCouponMapper;
 import com.totoro.db.dao.UserInfoMapper;
+import com.totoro.db.entity.Coupon;
+import com.totoro.db.entity.UserCoupon;
 import com.totoro.db.entity.UserInfo;
 import com.totoro.server.user.dto.LoginDTO;
 import com.totoro.server.user.dto.RegisterDTO;
@@ -17,8 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,6 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     CouponMapper couponMapper;
+
+    @Autowired
+    UserCouponMapper userCouponMapper;
 
     @Override
     public UserDTO userLogin(LoginDTO loginDTO) {
@@ -111,6 +120,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Optional register(RegisterDTO registerDTO) {
 
         log.info("【register】请求参数registerDTO：{}", registerDTO.toString());
@@ -175,7 +185,91 @@ public class UserServiceImpl implements UserService {
             throw new UserException(ResultMessageEnum.USER_REGISTER_FAILURE);
         }
 
+        //generate coupon
+        generateCoupons(userInfo.getId());
+
         return Optional.empty();
+    }
+
+    /**
+     * 为新注册用户生成优惠券
+     *
+     */
+    private void generateCoupons(Long userId) {
+        Coupon v10c0 = couponMapper.selectByCdKey(CouponsCdKeyConstant.VALUE_10_CONDITION_0);
+        if (Objects.isNull(v10c0)) {
+            Coupon coupon = new Coupon();
+            coupon.setName("10元新人优惠券");
+            coupon.setUseCondition(0);
+            coupon.setEffectiveTime(LocalDate.now());
+            coupon.setExpireTime(LocalDate.now().plusDays(3));
+            coupon.setValue(10);
+            coupon.setCreateTime(LocalDateTime.now());
+            coupon.setCdKey(CouponsCdKeyConstant.VALUE_10_CONDITION_0);
+            int insertResult = couponMapper.insertSelective(coupon);
+            if (insertResult != 1){
+                log.error("【generateCoupons】生成10元优惠券失败");
+                throw new UserException(ResultMessageEnum.COUPON_USER_INSERT_FAILURE);
+            }
+            log.info("【generateCoupons】生成10元优惠券");
+            insertUserCoupon(userId, coupon.getId());
+        } else {
+            insertUserCoupon(userId, v10c0.getId());
+        }
+        Coupon v20c50 = couponMapper.selectByCdKey(CouponsCdKeyConstant.VALUE_20_CONDITION_50);
+        if (Objects.isNull(v20c50)){
+            Coupon coupon = new Coupon();
+            coupon.setName("20元新人优惠券");
+            coupon.setUseCondition(50);
+            coupon.setEffectiveTime(LocalDate.now());
+            coupon.setExpireTime(LocalDate.now().plusDays(7));
+            coupon.setValue(20);
+            coupon.setCreateTime(LocalDateTime.now());
+            coupon.setCdKey(CouponsCdKeyConstant.VALUE_20_CONDITION_50);
+            int insertResult = couponMapper.insertSelective(coupon);
+            if (insertResult != 1){
+                log.error("【generateCoupons】生成20元优惠券失败");
+                throw new UserException(ResultMessageEnum.COUPON_USER_INSERT_FAILURE);
+            }
+            log.info("【generateCoupons】生成20元优惠券");
+
+            insertUserCoupon(userId, coupon.getId());
+        }else {
+            insertUserCoupon(userId, v20c50.getId());
+        }
+        Coupon v30c100 = couponMapper.selectByCdKey(CouponsCdKeyConstant.VALUE_30_CONDITION_100);
+        if (Objects.isNull(v30c100)){
+            Coupon coupon = new Coupon();
+            coupon.setName("30元新人优惠券");
+            coupon.setUseCondition(100);
+            coupon.setEffectiveTime(LocalDate.now());
+            coupon.setExpireTime(LocalDate.now().plusDays(30));
+            coupon.setValue(30);
+            coupon.setCreateTime(LocalDateTime.now());
+            coupon.setCdKey(CouponsCdKeyConstant.VALUE_30_CONDITION_100);
+            int insertResult = couponMapper.insertSelective(coupon);
+            if (insertResult != 1){
+                log.error("【generateCoupons】生成30元优惠券失败");
+                throw new UserException(ResultMessageEnum.COUPON_USER_INSERT_FAILURE);
+            }
+            log.info("【generateCoupons】生成30元优惠券");
+
+            insertUserCoupon(userId, coupon.getId());
+        }else {
+            insertUserCoupon(userId, v30c100.getId());
+        }
+    }
+
+    private void insertUserCoupon(Long userId, Long couponId) {
+        UserCoupon userCoupon = new UserCoupon();
+        userCoupon.setCouponId(couponId);
+        userCoupon.setUserId(userId);
+        userCoupon.setCreateTime(LocalDateTime.now());
+        int insertResult = userCouponMapper.insertSelective(userCoupon);
+        if (insertResult != 1){
+            log.error("【insertUserCoupon】插入用户-优惠券表失败");
+            throw new UserException(ResultMessageEnum.COUPON_USER_INSERT_FAILURE);
+        }
     }
 
     /**
@@ -196,18 +290,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserByToken(String token){
+    public UserDTO getUserByToken(String token) {
         log.info("【getUserByToken】请求参数token：{}", token);
 
         UserInfo userInfo = userInfoMapper.selectByToken(token);
 
-        if (Objects.isNull(userInfo)){
+        if (Objects.isNull(userInfo)) {
             log.error("【getUserByToken】用户不存在 token：{}", token);
             throw new UserException(ResultMessageEnum.USER_NOT_EXIST);
         }
 
         //token expire
-        if (userInfo.getTokenExpireTime().isBefore(LocalDateTime.now())){
+        if (userInfo.getTokenExpireTime().isBefore(LocalDateTime.now())) {
             log.error("【getUserByToken】用户token已失效 token：{}", token);
             throw new UserException(ResultMessageEnum.USER_TOKEN_EXPIRE);
         }
@@ -218,7 +312,7 @@ public class UserServiceImpl implements UserService {
         userInfoUpdate.setTokenExpireTime(LocalDateTime.now().plusDays(1L));
         userInfoUpdate.setLastLoginTime(LocalDateTime.now());
         int updateResult = userInfoMapper.updateByPrimaryKeySelective(userInfoUpdate);
-        if (updateResult != 1){
+        if (updateResult != 1) {
             log.error("【getUserByToken】更新用户token和登录时间失败");
             throw new UserException(ResultMessageEnum.USER_UPDATE_FAILURE);
         }
@@ -235,14 +329,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional updateUser(UpdateDTO updateDTO, Long id){
+    public Optional updateUser(UpdateDTO updateDTO, Long id) {
         log.info("【updateUser】请求参数updateDTO：{}", updateDTO.toString());
 
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(updateDTO, userInfo);
         userInfo.setId(id);
         int updateResult = userInfoMapper.updateByPrimaryKeySelective(userInfo);
-        if (updateResult != 1){
+        if (updateResult != 1) {
             log.error("【updateUser】更新用户信息失败");
             throw new UserException(ResultMessageEnum.USER_UPDATE_FAILURE);
         }

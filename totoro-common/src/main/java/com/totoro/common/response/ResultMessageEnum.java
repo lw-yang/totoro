@@ -29,6 +29,12 @@ public enum ResultMessageEnum {
     USER_NAME_EXIST(1009, "用户名已存在"),
     USER_TOKEN_EXPIRE(1010, "用token已失效"),
 
+    /**
+     * 优惠券错误码 2xxx
+     */
+    COUPON_USER_INSERT_FAILURE(2000, "插入用户-优惠券失败"),
+    COUPON_INSERT_FAILURE(2001, "插入优惠券失败"),
+
     ;
 
     private int errCode;
