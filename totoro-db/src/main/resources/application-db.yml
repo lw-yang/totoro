@@ -33,7 +33,7 @@ spring:
           slow-sql-millis: 2000
           log-slow-sql: true
         wall:
-          enabled: false
+          enabled: true
 
 mybatis:
   mapper-locations: classpath:mapper/*

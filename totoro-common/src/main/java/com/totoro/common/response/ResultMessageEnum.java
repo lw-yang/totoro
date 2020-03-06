@@ -32,9 +32,19 @@ public enum ResultMessageEnum {
     /**
      * 优惠券错误码 2xxx
      */
-    COUPON_USER_INSERT_FAILURE(2000, "插入用户-优惠券失败"),
-    COUPON_INSERT_FAILURE(2001, "插入优惠券失败"),
+    COUPON_USER_INSERT_FAILURE(2000, "用户-优惠券添加失败"),
+    COUPON_INSERT_FAILURE(2001, "优惠券添加失败"),
 
+    /**
+     * 地址错误码 3xxx
+     */
+    ADDRESS_INSERT_FAILURE(3000, "地址添加失败"),
+    ADDRESS_NOT_EXIST(3001, "地址不存在"),
+    ADDRESS_UPDATE_FAILURE(3002, "地址修改失败"),
+    ADDRESS_DELETE_FAILURE(3003, "地址删除失败"),
+    ADDRESS_UPDATE_USER_ID_NOT_MATCH(3004, "地址修改用户id不匹配"),
+    ADDRESS_DELETE_USER_ID_NOT_MATCH(3005, "地址删除用户id不匹配"),
+    ADDRESS_UPDATE_NOT_DEFAULT_FAILURE(3006, "地址设为非默认失败"),
     ;
 
     private int errCode;

@@ -26,15 +26,15 @@ import java.util.Map;
 @Slf4j
 public class CouponServiceImpl implements CouponService {
 
-    public static final String AVAILABLE_COUPONS = "availableCoupons";
-    public static final String EXPIRED_COUPONS = "expiredCoupons";
+    private static final String AVAILABLE_COUPONS = "availableCoupons";
+    private static final String EXPIRED_COUPONS = "expiredCoupons";
 
     @Autowired
     CouponMapper couponMapper;
 
     @Override
     public Map<String, List<CouponDTO>> listCoupons(Long userId){
-        log.info("【listCoupons】 userId：{}", userId);
+        log.info("【listCoupons Enter】 userId: {}", userId);
 
         List<Coupon> couponList = couponMapper.listCouponsByUserId(userId);
 
@@ -57,6 +57,8 @@ public class CouponServiceImpl implements CouponService {
         map.put(AVAILABLE_COUPONS, couponAvailableDTOList);
         map.put(EXPIRED_COUPONS, couponExpiredDTOList);
 
+        log.info("【listCoupons Exit】 AvailableDTOList: {}; ExpiredDTOList: {}",
+                couponAvailableDTOList, couponExpiredDTOList);
         return  map;
     }
 }

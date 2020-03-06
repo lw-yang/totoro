@@ -52,8 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO userLogin(LoginDTO loginDTO) {
-
-        log.info("【userLogin】请求参数loginDTO：{}", loginDTO.toString());
+        log.info("【userLogin Enter】请求参数loginDTO: {}", loginDTO.toString());
 
         UserInfo userInfo = null;
         String username = loginDTO.getUsername();
@@ -89,7 +88,10 @@ public class UserServiceImpl implements UserService {
 
         //generate token
         String token = UUID.randomUUID().toString().replaceAll("-", "");
-        userInfo.setToken(token);
+
+        if (Objects.isNull(userInfo.getToken())) {
+            userInfo.setToken(token);
+        }
 
         LocalDateTime now = LocalDateTime.now();
         userInfo.setTokenExpireTime(now.plusDays(1L));
@@ -98,7 +100,9 @@ public class UserServiceImpl implements UserService {
         //store the token
         UserInfo userUpdateInfo = new UserInfo();
         userUpdateInfo.setId(userInfo.getId());
-        userUpdateInfo.setToken(token);
+        if (Objects.isNull(userInfo.getToken())){
+            userUpdateInfo.setToken(token);
+        }
         userUpdateInfo.setTokenExpireTime(now.plusDays(1L));
         userUpdateInfo.setLastLoginTime(now);
 
@@ -116,14 +120,14 @@ public class UserServiceImpl implements UserService {
 
         //TODO set browse history
 
+        log.info("【userLogin Exit】userDTO: {}", userDTO.toString());
         return userDTO;
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Optional register(RegisterDTO registerDTO) {
-
-        log.info("【register】请求参数registerDTO：{}", registerDTO.toString());
+        log.info("【register Enter】请求参数registerDTO: {}", registerDTO.toString());
 
         //check password
         if (!Objects.equals(registerDTO.getPassword(), registerDTO.getRepeatPassword())) {
@@ -138,7 +142,7 @@ public class UserServiceImpl implements UserService {
         switch (deduceRegisterType(registerUsername)) {
             case EMAIL: {
                 if (Objects.nonNull(userInfoMapper.selectByEmail(registerUsername))) {
-                    log.error("【register】用户注册邮箱已存在：{}", registerUsername);
+                    log.error("【register】用户注册邮箱已存在: {}", registerUsername);
                     throw new UserException(ResultMessageEnum.USER_EMAIL_EXIST);
                 }
 
@@ -149,7 +153,7 @@ public class UserServiceImpl implements UserService {
             }
             case PHONE:
                 if (Objects.nonNull(userInfoMapper.selectByPhone(registerUsername))) {
-                    log.error("【register】用户注册手机号已存在：{}", registerUsername);
+                    log.error("【register】用户注册手机号已存在: {}", registerUsername);
                     throw new UserException(ResultMessageEnum.USER_PHONE_EXIST);
                 }
 
@@ -159,7 +163,7 @@ public class UserServiceImpl implements UserService {
                 break;
             case USERNAME:
                 if (Objects.nonNull(userInfoMapper.selectByNickname(registerUsername))) {
-                    log.error("【register】用户注册用户名已存在：{}", registerUsername);
+                    log.error("【register】用户注册用户名已存在: {}", registerUsername);
                     throw new UserException(ResultMessageEnum.USER_NAME_EXIST);
                 }
 
@@ -188,12 +192,12 @@ public class UserServiceImpl implements UserService {
         //generate coupon
         generateCoupons(userInfo.getId());
 
+        log.info("【register Exit");
         return Optional.empty();
     }
 
     /**
      * 为新注册用户生成优惠券
-     *
      */
     private void generateCoupons(Long userId) {
         Coupon v10c0 = couponMapper.selectByCdKey(CouponsCdKeyConstant.VALUE_10_CONDITION_0);
@@ -207,7 +211,7 @@ public class UserServiceImpl implements UserService {
             coupon.setCreateTime(LocalDateTime.now());
             coupon.setCdKey(CouponsCdKeyConstant.VALUE_10_CONDITION_0);
             int insertResult = couponMapper.insertSelective(coupon);
-            if (insertResult != 1){
+            if (insertResult != 1) {
                 log.error("【generateCoupons】生成10元优惠券失败");
                 throw new UserException(ResultMessageEnum.COUPON_USER_INSERT_FAILURE);
             }
@@ -217,7 +221,7 @@ public class UserServiceImpl implements UserService {
             insertUserCoupon(userId, v10c0.getId());
         }
         Coupon v20c50 = couponMapper.selectByCdKey(CouponsCdKeyConstant.VALUE_20_CONDITION_50);
-        if (Objects.isNull(v20c50)){
+        if (Objects.isNull(v20c50)) {
             Coupon coupon = new Coupon();
             coupon.setName("20元新人优惠券");
             coupon.setUseCondition(50);
@@ -227,18 +231,18 @@ public class UserServiceImpl implements UserService {
             coupon.setCreateTime(LocalDateTime.now());
             coupon.setCdKey(CouponsCdKeyConstant.VALUE_20_CONDITION_50);
             int insertResult = couponMapper.insertSelective(coupon);
-            if (insertResult != 1){
+            if (insertResult != 1) {
                 log.error("【generateCoupons】生成20元优惠券失败");
                 throw new UserException(ResultMessageEnum.COUPON_USER_INSERT_FAILURE);
             }
             log.info("【generateCoupons】生成20元优惠券");
 
             insertUserCoupon(userId, coupon.getId());
-        }else {
+        } else {
             insertUserCoupon(userId, v20c50.getId());
         }
         Coupon v30c100 = couponMapper.selectByCdKey(CouponsCdKeyConstant.VALUE_30_CONDITION_100);
-        if (Objects.isNull(v30c100)){
+        if (Objects.isNull(v30c100)) {
             Coupon coupon = new Coupon();
             coupon.setName("30元新人优惠券");
             coupon.setUseCondition(100);
@@ -248,14 +252,14 @@ public class UserServiceImpl implements UserService {
             coupon.setCreateTime(LocalDateTime.now());
             coupon.setCdKey(CouponsCdKeyConstant.VALUE_30_CONDITION_100);
             int insertResult = couponMapper.insertSelective(coupon);
-            if (insertResult != 1){
+            if (insertResult != 1) {
                 log.error("【generateCoupons】生成30元优惠券失败");
                 throw new UserException(ResultMessageEnum.COUPON_USER_INSERT_FAILURE);
             }
             log.info("【generateCoupons】生成30元优惠券");
 
             insertUserCoupon(userId, coupon.getId());
-        }else {
+        } else {
             insertUserCoupon(userId, v30c100.getId());
         }
     }
@@ -266,7 +270,7 @@ public class UserServiceImpl implements UserService {
         userCoupon.setUserId(userId);
         userCoupon.setCreateTime(LocalDateTime.now());
         int insertResult = userCouponMapper.insertSelective(userCoupon);
-        if (insertResult != 1){
+        if (insertResult != 1) {
             log.error("【insertUserCoupon】插入用户-优惠券表失败");
             throw new UserException(ResultMessageEnum.COUPON_USER_INSERT_FAILURE);
         }
@@ -291,18 +295,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByToken(String token) {
-        log.info("【getUserByToken】请求参数token：{}", token);
+        log.info("【getUserByToken Enter】请求参数token: {}", token);
 
         UserInfo userInfo = userInfoMapper.selectByToken(token);
 
         if (Objects.isNull(userInfo)) {
-            log.error("【getUserByToken】用户不存在 token：{}", token);
+            log.error("【getUserByToken】用户不存在 token: {}", token);
             throw new UserException(ResultMessageEnum.USER_NOT_EXIST);
         }
 
         //token expire
         if (userInfo.getTokenExpireTime().isBefore(LocalDateTime.now())) {
-            log.error("【getUserByToken】用户token已失效 token：{}", token);
+            log.error("【getUserByToken】用户token已失效 token: {}", token);
             throw new UserException(ResultMessageEnum.USER_TOKEN_EXPIRE);
         }
 
@@ -325,12 +329,13 @@ public class UserServiceImpl implements UserService {
 
         //TODO set browse history
 
+        log.info("【getUserByToken Exit】 userDTO: {}", userDTO.toString());
         return userDTO;
     }
 
     @Override
     public Optional updateUser(UpdateDTO updateDTO, Long id) {
-        log.info("【updateUser】请求参数updateDTO：{}", updateDTO.toString());
+        log.info("【updateUser Enter】请求参数updateDTO: {}", updateDTO.toString());
 
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(updateDTO, userInfo);
@@ -341,6 +346,7 @@ public class UserServiceImpl implements UserService {
             throw new UserException(ResultMessageEnum.USER_UPDATE_FAILURE);
         }
 
+        log.info("【updateUser Exit");
         return Optional.empty();
     }
 }

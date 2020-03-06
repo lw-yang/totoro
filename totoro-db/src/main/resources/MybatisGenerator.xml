@@ -47,7 +47,7 @@
 <!--        <table tableName="user_address" enableCountByExample="false"-->
 <!--               enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">-->
 <!--        </table>-->
-        <table tableName="coupon" enableCountByExample="false"
+        <table tableName="address" enableCountByExample="false"
                enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
         </table>
 
