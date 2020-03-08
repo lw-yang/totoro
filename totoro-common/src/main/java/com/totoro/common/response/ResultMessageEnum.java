@@ -46,6 +46,12 @@ public enum ResultMessageEnum {
     ADDRESS_UPDATE_USER_ID_NOT_MATCH(3004, "地址修改用户id不匹配"),
     ADDRESS_DELETE_USER_ID_NOT_MATCH(3005, "地址删除用户id不匹配"),
     ADDRESS_UPDATE_NOT_DEFAULT_FAILURE(3006, "地址设为非默认失败"),
+
+    /**
+     * 商品类别错误码 4xxx
+     */
+    CATEGORY_SELECT_FAILURE(4000, "类别查询失败"),
+
     ;
 
     private int errCode;
