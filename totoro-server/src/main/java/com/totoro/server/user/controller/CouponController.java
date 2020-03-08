@@ -1,5 +1,6 @@
 package com.totoro.server.user.controller;
 
+import com.totoro.common.interceptor.NeedAuthentication;
 import com.totoro.common.response.Result;
 import com.totoro.server.user.dto.CouponDTO;
 import com.totoro.server.user.service.CouponService;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
+@NeedAuthentication
 public class CouponController {
 
     @Autowired

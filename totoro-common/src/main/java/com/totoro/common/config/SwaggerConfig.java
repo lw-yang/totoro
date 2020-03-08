@@ -11,6 +11,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
+ * Swagger 配置
+ *
+ * http://localhost:8090/swagger-ui.html#/
+ *
  * @author lwyang  2020/3/5
  */
 
@@ -28,7 +32,6 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-
         return new ApiInfoBuilder()
                 .title("Totoro API 文档")
                 .contact(new Contact("lwyang", "https://github.com/lw-yang/totoro", "1670906161@qq.com"))

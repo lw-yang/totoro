@@ -5,9 +5,9 @@ package com.totoro.common.response;
  *
  * @author lwyang  2020/2/27
  */
-class ResultConstant {
+public interface ResultConstant {
 
-    static final String ERROR_CODE = "err_code";
+    String ERROR_CODE = "err_code";
 
-    static final String ERROR_MESSAGE = "err_message";
+    String ERROR_MESSAGE = "err_message";
 }

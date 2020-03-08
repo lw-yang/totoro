@@ -11,9 +11,10 @@ public enum ResultMessageEnum {
     /**
      * 错误码及错误信息
      */
-    ERROR_MESSAGE(-1, "出错啦, 请稍后再试"),
+    ERROR_MESSAGE(-1, "出错啦, 请联系作者"),
     PARAMETER_ERROR(-2,"请求参数错误"),
-    SQL_OPERATION_ERROR(-3, "数据库操作错误"),
+    SQL_OPERATION_ERROR(-3, "数据库错误, 请联系作者"),
+    NOT_AUTHENTICATION(-4, "请登录"),
 
     /**
      * 用户错误码 1xxx

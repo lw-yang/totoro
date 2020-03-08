@@ -33,6 +33,7 @@ public class TotoroExceptionHandler {
     public Result sqlException(SQLException e){
         log.error("【数据库错误】：{}" ,e.getMessage());
         e.printStackTrace();
-        return Result.badRequest(ResultMessageEnum.SQL_OPERATION_ERROR, e.getMessage());
+        return Result.badRequest(ResultMessageEnum.SQL_OPERATION_ERROR);
     }
+
 }

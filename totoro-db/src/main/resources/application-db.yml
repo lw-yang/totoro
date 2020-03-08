@@ -20,7 +20,7 @@ spring:
       max-open-prepared-statements: 20
       async-init: true
 
-      #监控
+      #监控 http://localhost:8090/druid/index.html
       web-stat-filter:
         enabled: true
         session-stat-enable: true

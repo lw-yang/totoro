@@ -1,5 +1,6 @@
 package com.totoro.server.user.controller;
 
+import com.totoro.common.interceptor.NeedAuthentication;
 import com.totoro.common.response.Result;
 import com.totoro.server.user.dto.LoginDTO;
 import com.totoro.server.user.dto.RegisterDTO;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 /**
- * User Controller
+ * 用户 Controller
  *
  * @author lwyang  2020/2/27
  */
@@ -54,6 +55,7 @@ public class UserController {
      * @return Result [status: 200]
      */
     @GetMapping("/{token}")
+    @NeedAuthentication
     public Result<UserDTO> getUser(@PathVariable String token) {
         return Result.success(userService.getUserByToken(token));
     }
@@ -65,6 +67,7 @@ public class UserController {
      * @return Result [status: 200]
      */
     @PutMapping("/{id}")
+    @NeedAuthentication
     public Result<Optional> updateUser(@RequestBody UpdateDTO updateDTO, @PathVariable Long id) {
         return Result.success(userService.updateUser(updateDTO, id));
     }

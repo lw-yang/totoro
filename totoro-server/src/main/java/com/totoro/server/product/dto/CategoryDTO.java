@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 分类 DTO
+ *
  * @author lwyang  2020/3/8
  */
 
