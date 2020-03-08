@@ -13,6 +13,8 @@
     <name>totoro-common</name>
     <description>totoro-common for totoro project</description>
 
+    <packaging>jar</packaging>
+
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -35,14 +37,5 @@
         </dependency>
 
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

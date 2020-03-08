@@ -18,9 +18,32 @@ public interface AddressService {
      */
     List<AddressDTO> listAddresses(Long userId);
 
+    /**
+     * 添加地址信息
+     *
+     * @param userId 用户id
+     * @param addressDTO addressDTO
+     * @return Optional
+     */
     Optional insertAddress(Long userId, AddressDTO addressDTO);
+
+    /**
+     * 更新地址信息
+     *
+     * @param userId 用户id
+     * @param addressesId 地址id
+     * @param addressDTO addressDTO
+     * @return Optional
+     */
 
     Optional updateAddress(Long userId, Long addressesId, AddressDTO addressDTO);
 
+    /**
+     * 删除地址信息
+     *
+     * @param userId 用户id
+     * @param addressesId 地址id
+     * @return Optional
+     */
     Optional deleteAddress(Long userId, Long addressesId);
 }

@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         UserInfo userInfo = null;
         String username = loginDTO.getUsername();
 
-        //query the User
+        // query the User
         switch (deduceRegisterType(username)) {
             case PHONE: {
                 userInfo = userInfoMapper.selectByPhone(username);
@@ -79,14 +79,20 @@ public class UserServiceImpl implements UserService {
             throw new UserException(ResultMessageEnum.USER_NOT_EXIST);
         }
 
-        //check password
+        // check user status
+        if (userInfo.getStatus() == 0){
+            log.error("【userLogin】用户已被禁用");
+            throw new UserException(ResultMessageEnum.USER_STATUS_DISABLED);
+        }
+
+        // check password
         boolean isPasswordCorrect = BCrypt.checkpw(loginDTO.getPassword(), userInfo.getPassword());
         if (!isPasswordCorrect) {
             log.error("【userLogin】用户密码错误");
             throw new UserException(ResultMessageEnum.USER_PASSWORD_ERROR);
         }
 
-        //generate token
+        // generate token
         String token = UUID.randomUUID().toString().replaceAll("-", "");
 
         if (Objects.isNull(userInfo.getToken())) {
@@ -97,7 +103,7 @@ public class UserServiceImpl implements UserService {
         userInfo.setTokenExpireTime(now.plusDays(1L));
         userInfo.setLastLoginTime(now);
 
-        //store the token
+        // update the token and tokenExpireTime
         UserInfo userUpdateInfo = new UserInfo();
         userUpdateInfo.setId(userInfo.getId());
         if (Objects.isNull(userInfo.getToken())){
@@ -115,10 +121,11 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(userInfo, userDTO);
 
+        // set couponsCount
         int couponsCount = couponMapper.selectCountByUserId(userInfo.getId());
         userDTO.setCouponsCount(couponsCount);
 
-        //TODO set browse history
+        // TODO set browse history
 
         log.info("【userLogin Exit】userDTO: {}", userDTO.toString());
         return userDTO;
@@ -297,11 +304,18 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByToken(String token) {
         log.info("【getUserByToken Enter】请求参数token: {}", token);
 
+        // query user
         UserInfo userInfo = userInfoMapper.selectByToken(token);
 
         if (Objects.isNull(userInfo)) {
             log.error("【getUserByToken】用户不存在 token: {}", token);
             throw new UserException(ResultMessageEnum.USER_NOT_EXIST);
+        }
+
+        // check user status
+        if (userInfo.getStatus() == 0){
+            log.error("【getUserByToken】用户已被禁用");
+            throw new UserException(ResultMessageEnum.USER_STATUS_DISABLED);
         }
 
         //token expire
@@ -324,6 +338,7 @@ public class UserServiceImpl implements UserService {
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(userInfo, userDTO);
 
+        // set couponsCount
         int couponsCount = couponMapper.selectCountByUserId(userInfo.getId());
         userDTO.setCouponsCount(couponsCount);
 

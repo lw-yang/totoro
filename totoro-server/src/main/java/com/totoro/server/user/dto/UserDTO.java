@@ -43,6 +43,8 @@ public class UserDTO {
 
     private BigDecimal balance;
 
+    private Byte status;
+
     private LocalDateTime lastLoginTime;
 
     private Integer couponsCount;

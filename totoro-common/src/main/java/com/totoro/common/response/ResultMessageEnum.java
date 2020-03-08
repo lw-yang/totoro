@@ -11,7 +11,7 @@ public enum ResultMessageEnum {
     /**
      * 错误码及错误信息
      */
-    ERROR_MESSAGE(-1, "出错啦,请稍后再试"),
+    ERROR_MESSAGE(-1, "出错啦, 请稍后再试"),
     PARAMETER_ERROR(-2,"请求参数错误"),
     SQL_OPERATION_ERROR(-3, "数据库操作错误"),
 
@@ -19,7 +19,7 @@ public enum ResultMessageEnum {
      * 用户错误码 1xxx
      */
     USER_PASSWORD_ERROR(1000, "用户密码错误"),
-    USER_NOT_EXIST(1002, "用户不存在"),
+    USER_NOT_EXIST(1002, "用户名不存在"),
     USER_REGISTER_FAILURE(1003, "用户注册失败"),
     USER_UPDATE_FAILURE(1004, "用户更新失败"),
     USER_DELETE_FAILURE(1005,"用户删除失败"),
@@ -27,7 +27,8 @@ public enum ResultMessageEnum {
     USER_EMAIL_EXIST(1007, "邮箱已存在"),
     USER_PHONE_EXIST(1008, "手机号已存在"),
     USER_NAME_EXIST(1009, "用户名已存在"),
-    USER_TOKEN_EXPIRE(1010, "用token已失效"),
+    USER_TOKEN_EXPIRE(1010, "用户token已失效"),
+    USER_STATUS_DISABLED(1011, "用户被禁用，请联系作者"),
 
     /**
      * 优惠券错误码 2xxx
