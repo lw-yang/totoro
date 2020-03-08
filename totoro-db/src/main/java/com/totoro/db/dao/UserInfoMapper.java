@@ -51,6 +51,8 @@ public interface UserInfoMapper {
      */
     int updateByPrimaryKey(UserInfo record);
 
+
+
     /**
      * 根据 nickname 查询用户信息
      * @param nickname nickname

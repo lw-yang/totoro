@@ -46,14 +46,14 @@ public class CouponServiceImpl implements CouponService {
             BeanUtils.copyProperties(i, couponDTO);
             couponDTO.setEffectiveTime(LocalDateTime.of(i.getEffectiveTime(), LocalTime.MIDNIGHT).toEpochSecond(ZoneOffset.of("+8")));
             couponDTO.setExpireTime(LocalDateTime.of(i.getExpireTime(), LocalTime.MIDNIGHT).toEpochSecond(ZoneOffset.of("+8")));
-            if (i.getExpireTime().isAfter(LocalDate.now())){
+            if (i.getExpireTime().plusDays(1L).isAfter(LocalDate.now())){
                 couponAvailableDTOList.add(couponDTO);
             }else {
                 couponExpiredDTOList.add(couponDTO);
             }
         });
 
-        Map<String, List<CouponDTO>> map = new HashMap<>(2);
+        Map<String, List<CouponDTO>> map = new HashMap<>(2, 1);
         map.put(AVAILABLE_COUPONS, couponAvailableDTOList);
         map.put(EXPIRED_COUPONS, couponExpiredDTOList);
 

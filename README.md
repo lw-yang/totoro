@@ -16,6 +16,12 @@ git clone https://github.com/lw-yang/totoro.git
 cd totoro
 mvn install
 mvn clean package
+
+# 启动totoro后台服务
+java -jar ./totoro-server/target/totoro-server-0.0.1-SNAPSHOT.jar
+
+# 启动管理后台服务
+java -jar ./totoro-admin/target/totoro-admin-0.0.1-SNAPSHOT.jar
 ```
 
 ## Features
