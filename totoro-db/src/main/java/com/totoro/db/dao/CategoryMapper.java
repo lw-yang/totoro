@@ -63,6 +63,13 @@ public interface CategoryMapper {
     List<Category> selectByRecommend();
 
     /**
+     * 查询所有首页分类
+     *
+     * @return List<Category>
+     */
+    List<Category> selectByHome();
+
+    /**
      * 根据 parentId 查询所有类别
      *
      * @param parentId parentId
