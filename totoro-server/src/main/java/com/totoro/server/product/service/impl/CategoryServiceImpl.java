@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * 分类 Service
+ *
  * @author lwyang  2020/3/8
  */
 
@@ -22,6 +24,7 @@ import java.util.Objects;
 public class CategoryServiceImpl implements CategoryService {
 
     private static final String CATEGORY_QUERY_RECOMMEND = "recommend";
+    private static final String HOME_QUERY_RECOMMEND = "home";
 
     @Autowired
     CategoryMapper categoryMapper;
@@ -35,17 +38,16 @@ public class CategoryServiceImpl implements CategoryService {
 
                 // query recommend category
                 categoryList = categoryMapper.selectByRecommend();
+            }else if (HOME_QUERY_RECOMMEND.equals(query)){
+
+                // query home category
+                categoryList = categoryMapper.selectByHome();
             }
         }else {
 
             // query category with parentId
             categoryList = categoryMapper.selectByParentId(parentId);
         }
-
-        // if (Objects.isNull(categoryList)){
-        //     log.error("【listCategories】 商品类别查询失败");
-        //     throw new ProductException(ResultMessageEnum.CATEGORY_SELECT_FAILURE);
-        // }
 
         List<CategoryDTO> categoryDTOList = new ArrayList<>(categoryList.size());
 

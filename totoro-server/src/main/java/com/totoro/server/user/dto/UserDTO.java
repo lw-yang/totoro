@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
+ * 用户信息 DTO
+ *
  * @author lwyang  2020/2/29
  */
 

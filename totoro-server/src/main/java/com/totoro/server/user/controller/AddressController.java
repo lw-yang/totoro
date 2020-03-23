@@ -1,5 +1,6 @@
 package com.totoro.server.user.controller;
 
+import com.totoro.common.interceptor.NeedAuthentication;
 import com.totoro.common.response.Result;
 import com.totoro.server.user.dto.AddressDTO;
 import com.totoro.server.user.service.AddressService;
@@ -10,11 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ *  地址 Controller
+ *
  * @author lwyang  2020/3/6
  */
 
 @RestController
 @RequestMapping("/users")
+@NeedAuthentication
 public class AddressController {
 
     @Autowired

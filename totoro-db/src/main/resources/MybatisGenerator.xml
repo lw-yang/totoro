@@ -41,7 +41,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="category" enableCountByExample="false"
+        <table tableName="daily_special" enableCountByExample="false"
                enableDeleteByExample="false" enableUpdateByExample="false" enableSelectByExample="false">
         </table>
 

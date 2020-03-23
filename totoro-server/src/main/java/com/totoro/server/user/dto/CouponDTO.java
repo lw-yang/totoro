@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 优惠券 DTO
+ *
  * @author lwyang  2020/3/5
  */
 
