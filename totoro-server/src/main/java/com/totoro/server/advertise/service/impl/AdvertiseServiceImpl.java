@@ -41,7 +41,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     ProductMapper productMapper;
 
     @Override
-    public List<DailySpecialDTO> listDailySpecial(){
+    public List<DailySpecialDTO> listDailySpecial() {
         List<DailySpecial> dailySpecialList = dailySpecialMapper.selectByEffectiveDate();
         List<DailySpecialDTO> dailySpecialDTOList = new ArrayList<>(dailySpecialList.size());
         dailySpecialList.forEach(i -> {
@@ -49,7 +49,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             BeanUtils.copyProperties(i, dailySpecialDTO);
 
             Product product = productMapper.selectByPrimaryKey(i.getProductId());
-            if (Objects.isNull(product)){
+            if (Objects.isNull(product)) {
                 log.error("【listDailySpecial】商品查询失败");
                 throw new AdvertiseException(ResultMessageEnum.PRODUCT_SELECT_FAILURE);
             }
@@ -61,7 +61,7 @@ public class AdvertiseServiceImpl implements AdvertiseService {
     }
 
     @Override
-    public List<DailyChoiceDTO> listDailyChoice(){
+    public List<DailyChoiceDTO> listDailyChoice() {
         List<DailyChoice> dailyChoiceList = dailyChoiceMapper.selectAll();
         List<DailyChoiceDTO> dailyChoiceDTOList = new ArrayList<>(dailyChoiceList.size());
         dailyChoiceList.forEach(i -> {
@@ -69,13 +69,13 @@ public class AdvertiseServiceImpl implements AdvertiseService {
             BeanUtils.copyProperties(i, dailyChoiceDTO);
 
             Product product = productMapper.selectByPrimaryKey(i.getProductId());
-            if (Objects.isNull(product)){
+            if (Objects.isNull(product)) {
                 log.error("【listDailySpecial】商品查询失败");
                 throw new AdvertiseException(ResultMessageEnum.PRODUCT_SELECT_FAILURE);
             }
 
             dailyChoiceDTO.setProductName(product.getName());
-            dailyChoiceDTO.setProductPrice(product.getPrice().setScale(2));
+            dailyChoiceDTO.setProductPrice(product.getPrice());
             dailyChoiceDTO.setProductDesc(product.getDescription());
             dailyChoiceDTOList.add(dailyChoiceDTO);
         });
