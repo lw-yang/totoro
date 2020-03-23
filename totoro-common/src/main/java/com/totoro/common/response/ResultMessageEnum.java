@@ -52,6 +52,7 @@ public enum ResultMessageEnum {
      * 商品类别错误码 4xxx
      */
     CATEGORY_SELECT_FAILURE(4000, "类别查询失败"),
+    PRODUCT_SELECT_FAILURE(4001, "商品信息查询失败"),
 
     ;
 
